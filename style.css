@@ -1,0 +1,510 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+  font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", serif;
+  color: #fff;
+  overflow: hidden;
+}
+
+/* 配信用HUD全体 */
+.moonlive {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* 常時星空 */
+.ambient-stars,
+.moon-particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* 上部：月とタイトル */
+.hero {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 360px;
+  text-align: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.moon-aura {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.moon-aura::before {
+  content: "";
+  position: absolute;
+  width: 175px;
+  height: 175px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 235, 150, 0.28), transparent 70%);
+  animation: auraPulse 3.8s ease-in-out infinite;
+}
+
+@keyframes auraPulse {
+  0%, 100% { transform: scale(0.95); opacity: 0.5; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+.main-moon {
+  width: 145px;
+  height: 145px;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+  filter:
+    drop-shadow(0 0 20px rgba(255, 242, 170, 0.95))
+    drop-shadow(0 0 55px rgba(255, 205, 80, 0.6));
+}
+
+.main-moon.flash {
+  animation: moonFlash 1.25s ease-out;
+}
+
+@keyframes moonFlash {
+  0% { transform: scale(1); filter: brightness(1) drop-shadow(0 0 25px gold); }
+  35% { transform: scale(1.28); filter: brightness(2.4) drop-shadow(0 0 85px #fff1a0); }
+  100% { transform: scale(1); filter: brightness(1) drop-shadow(0 0 25px gold); }
+}
+
+.sub-title {
+  margin-top: -4px;
+  color: #e8d79a;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-shadow: 0 0 8px rgba(255, 220, 120, 0.7);
+}
+
+.title-box h1 {
+  margin: 4px 0 2px;
+  font-size: 31px;
+  letter-spacing: 0.18em;
+  color: #fff7cc;
+  text-shadow: 0 0 8px #ffe889, 0 0 24px rgba(255, 210, 80, 0.75);
+}
+
+.title-box p {
+  margin: 0;
+  color: #f4df94;
+  font-size: 12px;
+  text-shadow: 0 0 8px rgba(255, 220, 120, 0.6);
+}
+
+/* 左下：月ゲージ */
+.moon-panel {
+  position: fixed;
+  left: 28px;
+  bottom: 28px;
+  width: 330px;
+  padding: 14px;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255, 230, 140, 0.16), transparent 36%),
+    rgba(7, 10, 32, 0.86);
+  border: 1px solid rgba(255, 226, 145, 0.62);
+  box-shadow:
+    0 0 26px rgba(255, 220, 120, 0.22),
+    inset 0 0 18px rgba(255,255,255,0.04);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.moon-panel::before {
+  content: "🌙 月の欠片";
+  display: block;
+  color: #fff1a6;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-shadow: 0 0 10px gold;
+}
+
+.phase-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #fff2a7;
+  margin-bottom: 8px;
+}
+
+.gauge {
+  height: 22px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.35);
+}
+
+.gauge-fill {
+  height: 100%;
+  width: 49%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #697cff, #b98cff, #fff1a6);
+  box-shadow: 0 0 20px rgba(255, 240, 170, 0.95);
+  transition: width 0.5s ease;
+}
+
+.fragment-count {
+  margin-top: 7px;
+  text-align: center;
+  font-size: 23px;
+  font-weight: bold;
+  color: #fff38c;
+  text-shadow: 0 0 12px rgba(255, 230, 100, 0.8);
+}
+
+/* 右下：試練 */
+.trial-panel {
+  position: fixed;
+  right: 28px;
+  bottom: 28px;
+  width: 330px;
+  padding: 16px;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 80% 0%, rgba(120, 170, 255, 0.16), transparent 36%),
+    rgba(7, 10, 32, 0.88);
+  border: 1px solid rgba(255, 226, 145, 0.62);
+  box-shadow:
+    0 0 26px rgba(120, 170, 255, 0.22),
+    inset 0 0 18px rgba(255,255,255,0.04);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.section-label {
+  color: #f1d98c;
+  font-size: 14px;
+  margin-bottom: 8px;
+  text-shadow: 0 0 9px gold;
+}
+
+.trial-name {
+  font-size: 23px;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(150, 190, 255, 0.85);
+}
+
+.trial-timer {
+  margin-top: 8px;
+  color: rgba(255,255,255,0.86);
+  font-size: 16px;
+}
+
+/* コントロールは配信画面では非表示 */
+.control-panel,
+.gift-board {
+  display: none !important;
+}
+
+/* 月神ボード */
+.moon-god-board {
+  position: fixed;
+  top: 24px;
+  right: 28px;
+  min-width: 220px;
+  padding: 15px 22px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 230, 120, 0.18), transparent 40%),
+    rgba(8, 7, 30, 0.88);
+  border: 2px solid gold;
+  box-shadow: 0 0 32px rgba(255, 215, 0, 0.65);
+  opacity: 0;
+  transition: 0.3s ease;
+  z-index: 30;
+  text-align: center;
+}
+
+.moon-god-board.show {
+  opacity: 1;
+}
+
+.moon-god-board strong {
+  display: block;
+  margin-top: 5px;
+  font-size: 25px;
+  color: #ffe56b;
+}
+
+/* 通常ポップアップ */
+.popup {
+  position: fixed;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%) scale(0.85);
+  width: 430px;
+  padding: 28px;
+  border-radius: 28px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 230, 145, 0.18), transparent 35%),
+    rgba(5, 8, 28, 0.94);
+  border: 2px solid rgba(255, 230, 150, 0.82);
+  box-shadow:
+    0 0 50px rgba(255, 220, 120, 0.6),
+    inset 0 0 24px rgba(255,255,255,0.04);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 40;
+}
+
+.popup.show {
+  animation: popupShow 4s ease forwards;
+}
+
+@keyframes popupShow {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.72); }
+  15% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+  25% { transform: translate(-50%, -50%) scale(1); }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+#popupTitle {
+  font-size: 31px;
+  color: #fff1a5;
+  font-weight: bold;
+  text-shadow: 0 0 18px gold;
+}
+
+#popupName {
+  margin-top: 10px;
+  font-size: 27px;
+  color: #ffe56b;
+}
+
+#popupText {
+  margin-top: 11px;
+  font-size: 20px;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+/* ルーレット */
+.roulette {
+  position: fixed;
+  left: 50%;
+  bottom: 110px;
+  transform: translateX(-50%) scale(0.9);
+  width: 420px;
+  padding: 24px;
+  border-radius: 24px;
+  text-align: center;
+  background: rgba(6, 8, 30, 0.93);
+  border: 2px solid rgba(170, 210, 255, 0.85);
+  box-shadow: 0 0 42px rgba(100, 190, 255, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 35;
+}
+
+.roulette.show {
+  animation: rouletteShow 5s ease forwards;
+}
+
+@keyframes rouletteShow {
+  0% { opacity: 0; transform: translateX(-50%) scale(0.8); }
+  15% { opacity: 1; transform: translateX(-50%) scale(1.04); }
+  75% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(-50%) scale(0.95); }
+}
+
+.roulette-title {
+  color: #aee1ff;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+#rouletteText {
+  color: #fff;
+  font-size: 26px;
+  font-weight: bold;
+}
+
+/* 流れ星 */
+.shooting-star,
+.ambient-shooting-star {
+  position: fixed;
+  width: 170px;
+  height: 3px;
+  left: -220px;
+  background: linear-gradient(90deg, #fff, rgba(255,255,255,0));
+  filter: drop-shadow(0 0 10px white);
+  transform: rotate(-20deg);
+  animation: shootingStar 1.35s ease-out forwards;
+  z-index: 35;
+}
+
+@keyframes shootingStar {
+  0% { left: -220px; opacity: 0; }
+  18% { opacity: 1; }
+  100% { left: 120vw; opacity: 0; }
+}
+
+/* 常時星 */
+.star-dot {
+  position: fixed;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: rgba(255, 245, 190, 0.9);
+  box-shadow: 0 0 8px rgba(255, 230, 150, 0.9);
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.5); }
+}
+
+.moon-orb {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff2a8;
+  box-shadow: 0 0 12px gold;
+  animation: moonOrbFloat 4s ease-in-out infinite;
+}
+
+@keyframes moonOrbFloat {
+  0% { transform: translateY(0) scale(0.6); opacity: 0; }
+  25% { opacity: 1; }
+  100% { transform: translateY(-90px) scale(1.3); opacity: 0; }
+}
+
+/* 👑 特大ギフト専用シネマ */
+.god-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.god-scene.show {
+  animation: godSceneShow 7.2s ease forwards;
+}
+
+@keyframes godSceneShow {
+  0% { opacity: 0; }
+  6% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.god-dark {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at center, rgba(255, 230, 140, 0.12), transparent 34%),
+    rgba(0, 0, 12, 0.94);
+}
+
+.god-scene-moon-wrap {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+#godSceneMoon {
+  width: 280px;
+  height: 280px;
+  object-fit: contain;
+  filter:
+    brightness(1.25)
+    drop-shadow(0 0 55px rgba(255, 238, 150, 1))
+    drop-shadow(0 0 150px rgba(255, 200, 70, 0.95));
+}
+
+.god-scene.show #godSceneMoon {
+  animation: godSceneMoonZoom 7.2s ease forwards;
+}
+
+@keyframes godSceneMoonZoom {
+  0% { transform: scale(0.2); opacity: 0; }
+  12% { transform: scale(1.1); opacity: 1; }
+  38% { transform: scale(3.6); opacity: 1; }
+  66% { transform: scale(5.1); opacity: 0.92; }
+  100% { transform: scale(6.4); opacity: 0; }
+}
+
+.god-scene-text {
+  position: absolute;
+  left: 50%;
+  top: 53%;
+  width: 90%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  opacity: 0;
+  color: #fff4bd;
+  text-shadow: 0 0 12px gold, 0 0 34px rgba(255, 210, 90, 0.95);
+}
+
+.god-scene.show .god-scene-text {
+  animation: godSceneText 7.2s ease forwards;
+}
+
+@keyframes godSceneText {
+  0%, 25% { opacity: 0; transform: translate(-50%, -43%) scale(0.82); }
+  38% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  78% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -58%) scale(1.08); }
+}
+
+.god-scene-sub {
+  font-size: 25px;
+  letter-spacing: 0.28em;
+}
+
+.god-scene-name {
+  margin-top: 16px;
+  font-size: 64px;
+  font-weight: bold;
+  letter-spacing: 0.12em;
+}
+
+.god-scene-message {
+  margin-top: 20px;
+  font-size: 27px;
+  line-height: 1.55;
+}
+
+.god-particle {
+  position: fixed;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fff3a6;
+  box-shadow: 0 0 14px gold;
+  z-index: 1000;
+  pointer-events: none;
+  animation: godParticle 2.5s ease-out forwards;
+}
+
+@keyframes godParticle {
+  0% { transform: translateY(0) scale(0.25); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(-180px) scale(1.5); opacity: 0; }
+}

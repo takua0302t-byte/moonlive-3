@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoonLive Legendary Edition</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <main class="moonlive">
+    <div id="ambientStars" class="ambient-stars"></div>
+<div id="moonParticles" class="moon-particles"></div>
+
+    <section class="hero">
+      <div class="moon-aura">
+        <img src="moon.png" alt="moon" class="main-moon" id="mainMoon">
+      </div>
+
+      <div class="title-box">
+        <div class="sub-title">月から届く神託</div>
+        <h1>月心神楽</h1>
+        <p>みんなの応援で満月を目指そう</p>
+      </div>
+    </section>
+
+    <section class="moon-panel">
+      <div class="phase-row">
+        <span>🌑 新月</span>
+        <span>🌒 三日月</span>
+        <span>🌓 半月</span>
+        <span>🌕 満月</span>
+      </div>
+
+      <div class="gauge">
+        <div class="gauge-fill" id="gaugeFill"></div>
+      </div>
+
+      <div class="fragment-count">
+        <span id="fragments">245</span> / <span id="maxFragments">500</span>
+      </div>
+    </section>
+
+    <section class="trial-panel">
+      <div class="section-label">現在の試練</div>
+      <div id="currentTrial" class="trial-name">月の導きを待機中</div>
+      <div class="trial-timer">残り時間：<span id="timer">--:--</span></div>
+    </section>
+
+
+  </main>
+
+  <div id="moonGodBoard" class="moon-god-board">
+    <div>今宵の月神</div>
+    <strong id="moonGodName">---</strong>
+  </div>
+
+  <div id="popup" class="popup">
+    <div id="popupTitle"></div>
+    <div id="popupName"></div>
+    <div id="popupText"></div>
+  </div>
+
+  <div id="roulette" class="roulette">
+    <div class="roulette-title">月の審判</div>
+    <div id="rouletteText">運命を選定中...</div>
+  </div>
+
+  <div id="godScene" class="god-scene">
+    <div class="god-dark"></div>
+
+    <div class="god-scene-moon-wrap">
+      <img src="moon.png" alt="巨大満月" id="godSceneMoon">
+    </div>
+
+    <div class="god-scene-text">
+      <div class="god-scene-sub">今宵の月神</div>
+      <div id="godSceneName" class="god-scene-name">---</div>
+      <div class="god-scene-message">
+        月神の加護が<br>
+        夜空を満たした
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

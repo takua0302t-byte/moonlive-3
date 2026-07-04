@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>MoonLive Control</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #080b20;
+      color: white;
+      font-family: "Yu Gothic", sans-serif;
+    }
+
+    .panel {
+      width: 360px;
+      padding: 18px;
+      border-radius: 18px;
+      background: #111735;
+      border: 1px solid rgba(255, 220, 130, 0.6);
+      box-shadow: 0 0 24px rgba(255, 220, 120, 0.25);
+    }
+
+    h1 {
+      font-size: 24px;
+      color: #fff0a8;
+      margin-top: 0;
+    }
+
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 9px;
+      border: none;
+      border-radius: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      background: linear-gradient(90deg, #fff3ad, #d9bb62);
+      color: #17132c;
+    }
+
+    .row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .row button {
+      width: 50%;
+    }
+
+    .note {
+      margin-top: 14px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="panel">
+    <h1>🌕 MoonLive Control</h1>
+
+    <input id="giverName" type="text" placeholder="贈り主の名前">
+
+    <button onclick="sendCommand('smallGift')">🌙 小ギフト</button>
+    <button onclick="sendCommand('mediumGift')">🔔 中ギフト</button>
+    <button onclick="sendCommand('largeGift')">⭐ 大ギフト</button>
+    <button onclick="sendCommand('godGift')">👑 特大ギフト</button>
+
+    <div class="row">
+      <button onclick="sendCommand('addFragments')">欠片 +10</button>
+      <button onclick="sendCommand('resetMoon')">リセット</button>
+    </div>
+
+    <div class="note">
+      配信画面は index.html<br>
+      操作画面は control.html<br>
+      両方を同時に開いて使う。
+    </div>
+  </div>
+
+  <script>
+    function sendCommand(type) {
+      const name = document.getElementById("giverName").value.trim() || "月の民";
+
+      const command = {
+        type: type,
+        name: name,
+        time: Date.now()
+      };
+
+      localStorage.setItem("moonliveCommand", JSON.stringify(command));
+    }
+  </script>
+</body>
+</html>
